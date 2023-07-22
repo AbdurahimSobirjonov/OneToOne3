@@ -7,6 +7,9 @@ import com.example.onetoone3.entity.Student;
 import com.example.onetoone3.repository.GroupRepository;
 import com.example.onetoone3.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +42,12 @@ public class StudentController {
     public List<Student> getStudent() {
         return studentRepository.findAll();
     }
+    @RequestMapping(value = "/student/page",method = RequestMethod.GET)
+    public Page<Student> getStudentPage(@PathVariable Integer page){
+        Pageable pageable = PageRequest.of(page,10);
+        Page<Student> all = studentRepository.findAll(pageable);
+        return all;
+    }
 
     @RequestMapping(value = "/student/{id}", method = RequestMethod.DELETE)
     public void deleteStudent(@PathVariable Integer id) {
@@ -55,6 +64,7 @@ public class StudentController {
             studentRepository.save(student);
         }
     }
+
 
 }
 
